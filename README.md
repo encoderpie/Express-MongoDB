@@ -1,4 +1,4 @@
-# twitch-chat-tmijs
+# express-MongoDB
 Mongodb crud database operations with Expressjs ejs node.js
 
 ### Installation - Clone repo
