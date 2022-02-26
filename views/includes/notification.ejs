@@ -1,0 +1,26 @@
+<%try {%>
+   <script>
+      let notificationText = '<%=notificationText%>'
+      let body = document.getElementById('body')
+      let notificationBox = document.createElement('div')
+      notificationBox.setAttribute('id', 'notificationBox')
+      let notifText = document.createElement('p')
+      notifText.innerText = notificationText
+      notificationBox.appendChild(notifText)
+      let notifClose = document.createElement('button')
+      notificationBox.className = 'fixed-bottom p-3 bg-opacity-50 bg-secondary'
+      notifText.className = 'float-start h-25 m-0'
+      notifClose.className = 'btn-close float-end'
+      notificationBox.appendChild(notifClose)
+      body.appendChild(notificationBox)
+      // Close notification box
+      notifClose.addEventListener("click", notificationClose)
+      function notificationClose() {
+         notificationBox.style.display = 'none'
+      }
+   </script>
+<%} catch {%>
+   <script>
+      console.log('Not found notification')
+   </script>
+<%}%>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%-include('includes/headTag.ejs')%>
+</head>
+<body id="body">
+   <%-include('includes/navbar.ejs')%>
+   <div class='container'>
+      <form name="registerForm" method="POST" action="/user/register">
+         <div class="row g-2">
+            <div class="col-md">
+               <div class="form-floating">
+                  <input name="username" type="text" class="form-control" id="floatingInputGrid" placeholder="Alexander">
+                  <label for="floatingInputGrid" class="opacity-50">Username</label>
+               </div>
+            </div>
+            <div class="col-md">
+               <div class="form-floating">
+                  <input name="email" type="email" class="form-control" id="floatingInputGrid" placeholder="name@example.com">
+                  <label for="floatingInputGrid" class="opacity-50">Email address</label>
+               </div>
+            </div>
+         </div>
+         <div class="row mt-3 g-2">
+            <div class="col-md">
+               <div class="form-floating">
+                  <input name="fname" type="text" class="form-control" id="floatingInputGrid" placeholder="Alex">
+                  <label for="floatingInputGrid" class="opacity-50">First name</label>
+               </div>
+            </div>
+            <div class="col-md">
+               <div class="form-floating">
+                  <input name="lname" type="text" class="form-control" id="floatingInputGrid" placeholder="Jhon">
+                  <label for="floatingInputGrid" class="opacity-50">Last name</label>
+               </div>
+            </div>
+            <!-- <div class="col-md">
+              <div class="form-floating">
+                <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example">
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+                <label for="floatingSelectGrid">Works with selects</label>
+              </div>
+            </div> -->
+         </div>
+         <div class="row g-2 mb-3 mt-3">
+            <div class="col-md">
+               <div class="form-floating">
+                  <input name="password" type="password" class="form-control" id="floatingInputGrid" placeholder="Some very secret password">
+                  <label for="floatingInputGrid" class="opacity-50">Password</label>
+               </div>
+            </div>
+         </div>
+         <input type="submit" class="btn btn-primary" value='Register'></input>
+      </form>
+   </div>
+   <%-include('includes/scripts.ejs')%>
+   <%-include('includes/notification.ejs')%>
+</body>
+</html>

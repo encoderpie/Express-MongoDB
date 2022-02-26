@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%-include('includes/headTag.ejs')%>
+</head>
+<body id="body">
+   <%-include('includes/navbar.ejs')%>
+   <div class='container'>
+      <form name="deleteUserForm" method="POST" action="/user/delete">
+         <div class="row g-2 mb-3">
+            <div class="col-md">
+               <div class="form-floating">
+                  <input name="userid" type="text" class="form-control" id="floatingInputGrid" placeholder="Alexander">
+                  <label for="floatingInputGrid" class="opacity-50">User ID</label>
+               </div>
+            </div>
+         </div>
+         <input type="submit" class="btn btn-primary" value='Delete user'></input>
+      </form>
+   </div>
+   <%-include('includes/scripts.ejs')%>
+   <%-include('includes/notification.ejs')%>
+</body>
+</html>
