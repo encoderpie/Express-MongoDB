@@ -6,6 +6,7 @@ const app = express()
 const bodyParser = require("body-parser")
 const userSchema = require('./models/userSchema')
 
+// MongoDB connection
 mongoose.connect("mongodb+srv://" + env.MONGOOSE_USERNAME + ":" + env.MONGOOSE_PASSWORD + "@cluster0.qwe3x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
    useNewUrlParser: true,
    useUnifiedTopology: true
@@ -13,10 +14,11 @@ mongoose.connect("mongodb+srv://" + env.MONGOOSE_USERNAME + ":" + env.MONGOOSE_P
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
-app.use(express.static(__dirname + '/public'))
+//app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 
+// Get methods
 app.get('/', function(req, res) {
    res.render('index.ejs')
 })
@@ -39,6 +41,7 @@ app.get('/page/userupdate', function(req, res) {
    res.render('updateUser.ejs')
 })
 
+// Post methods
 app.post('/user/register', function(req, res) {
    let userData = {
       username: req.body.username,

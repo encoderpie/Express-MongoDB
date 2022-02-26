@@ -1,9 +1,10 @@
-# twitch-chat-tmijs
+# express-MongoDB
 Mongodb crud database operations with Expressjs ejs node.js
 
 ### Installation - Clone repo
 ```
 git clone https://github.com/encoderpie/Express-MongoDB.git
+cd Express-MongoDB/
 npm i
 ```
 
