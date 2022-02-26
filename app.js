@@ -101,7 +101,7 @@ app.post('/user/update', function(req, res) {
    }
 })
 
-let PORT = env.APP_PORT || 5000;
-app.listen(PORT, () => {
+let PORT = env.APP_PORT || env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
    console.log(`[OK] Listening on port ${PORT}!`)
 })
