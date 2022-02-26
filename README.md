@@ -9,7 +9,7 @@ npm i
 ```
 
 ### Config - Env
-Rename .env.example file to .env
+Rename env.example file to .env
 ```
 # App
 APP_PORT = 4000
