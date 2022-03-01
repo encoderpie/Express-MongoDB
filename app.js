@@ -3,11 +3,11 @@ const mongoose = require('mongoose')
 require('dotenv/config')
 const env = process.env
 const app = express()
-const bodyParser = require("body-parser")
+const bodyParser = require('body-parser')
 const userSchema = require('./models/userSchema')
 
 // MongoDB connection
-mongoose.connect("mongodb+srv://" + env.MONGOOSE_USERNAME + ":" + env.MONGOOSE_PASSWORD + "@cluster0.qwe3x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+mongoose.connect('mongodb+srv://' + env.MONGOOSE_USERNAME + ':' + env.MONGOOSE_PASSWORD + '@cluster0.qwe3x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
    useNewUrlParser: true,
    useUnifiedTopology: true
 })
@@ -26,7 +26,7 @@ app.get('/', function(req, res) {
 app.get('/page/userlist', function(req, res) {
    userSchema.find({}, function (err, users) {
       if (err) {
-         console.log(err);
+         console.log(err)
       } else {
          res.render('listUsers.ejs', {users})
       }
@@ -50,28 +50,51 @@ app.post('/user/register', function(req, res) {
       email: req.body.email,
       password: req.body.password
    }
-   userSchema.create({
-      username: userData.username,
-      firstname: userData.firstname,
-      lastname: userData.lastname,
-      email: userData.email,
-      password: userData.password,
-   })
-   console.log(userData)
-   let text = "Successfully registered"
-   res.render("index.ejs", {notificationText: text})
+   let doHaveAnyData = false
+   for (const [key, value] of Object.entries(userData)) {
+      if (value == '') {
+         let text = 'No record created. All blanks must be filled!'
+         res.render('index.ejs', {notificationText: text})
+         doHaveAnyData = true
+      }
+   }
+   if (doHaveAnyData == false) {
+      userSchema.create({
+         username: userData.username,
+         firstname: userData.firstname,
+         lastname: userData.lastname,
+         email: userData.email,
+         password: userData.password
+      })
+      let text = 'Successfully registered'
+      res.render('index.ejs', {notificationText: text})
+   }
 })
 
 app.post('/user/delete', function(req, res) {
-   userSchema.findByIdAndRemove(req.body.userid, function(err){
-      if(err){
-         let text = "An error occurred or the id entered was not found"
-         res.render("deleteUser.ejs", {notificationText: text})
+   userSchema.findById(req.body.id, function (err, user) {
+      if (err) {
+         console.log(err)
+         let text = 'There was a problem deleting the user, try again later.'
+         res.render('updateUser.ejs', {notificationText: text})
       } else {
-         let text = "Successfully deleted record with id " + req.body.userid
-         res.render("deleteUser.ejs", {notificationText: text})
+         const userPassword = user.password
+         if (userPassword == req.body.password) {
+            userSchema.findByIdAndRemove(req.body.id, function(err){
+               if(err) {
+                  let text = 'An error occurred or the id and password entered was not found'
+                  res.render('deleteUser.ejs', {notificationText: text})
+               } else {
+                  let text = 'Successfully deleted record with id ' + req.body.id
+                  res.render('deleteUser.ejs', {notificationText: text})
+               }
+            })
+         } else {
+            let text = 'Password is not correct!'
+            res.render('deleteUser.ejs', {notificationText: text})
+         }
       }
-   });
+   })
 })
 
 function updateRecord(req, res) {
@@ -79,29 +102,45 @@ function updateRecord(req, res) {
       username: req.body.username,
       firstname: req.body.fname,
       lastname: req.body.lname,
-      email: req.body.email
+      email: req.body.email,
+      password: req.body.newpassword
    }
-   userSchema.findByIdAndUpdate(req.body.recordIdBeUpdate, userNewData, function (err, docs) {
+   userSchema.findById(req.body.recordIdBeUpdate, function (err, user) {
       if (err) {
          console.log(err)
+         let text = 'There was a problem updating the user, try again later.'
+         res.render('updateUser.ejs', {notificationText: text})
       } else {
-         console.log("Updated user:", docs)
+         const userPassword = user.password
+         if (userPassword == req.body.beforepassword) {
+            userSchema.findByIdAndUpdate(req.body.recordIdBeUpdate, userNewData, function (err, docs) {
+               if (err) {
+                  console.log(err)
+                  let text = 'There was a problem updating the user, try again later.'
+                  res.render('updateUser.ejs', {notificationText: text})
+               } else {
+                  let text = 'Record updated successfully.'
+                  res.render('updateUser.ejs', {notificationText: text})
+               }
+            })
+         } else {
+            let text = 'Password is not correct!'
+            res.render('updateUser.ejs', {notificationText: text})
+         }
       }
    })
 }
 
 app.post('/user/update', function(req, res) {
    if (req.body.username == '') {
-      let text = "Something went wrong! New information was not entered. try again."
-      res.render("updateUser.ejs", {notificationText: text})
+      let text = 'Something went wrong! New information was not entered. try again.'
+      res.render('updateUser.ejs', {notificationText: text})
    } else {
-      updateRecord(req, res)
-      let text = "Successfully updated record"
-      res.render("updateUser.ejs", {notificationText: text})
+      update = updateRecord(req, res)
    }
 })
 
-let PORT = env.PORT || 5000;
+let PORT = env.APP_PORT || env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
    console.log(`[OK] Listening on port ${PORT}!`)
 })
